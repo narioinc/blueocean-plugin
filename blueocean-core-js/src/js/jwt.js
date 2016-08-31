@@ -41,7 +41,8 @@ export default {
      */
     verifyToken(token, certObject) {
         return new Promise((resolve, reject) =>
-            jwt.verify(token, jwk2pem(certObject), { algorithms: [certObject.alg] }, (err, payload) => {
+            // Allow the clocks to be 60s out of sync.
+            jwt.verify(token, jwk2pem(certObject), { algorithms: [certObject.alg], clockTolerance: 60 }, (err, payload) => {
                 if (err) {
                     reject(err);
                 } else {
